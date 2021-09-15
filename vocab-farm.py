@@ -1,9 +1,13 @@
 from vocab_methods import seleniumMethods
+import json
 
-username = "seanyan0915@gmail.com"
-password = "shz9k43nx6"
-url = "https://www.vocabulary.com/lists/23400/practice"
-
+f = open('data.json',)
+data = json.load(f)
+for i in data:
+    
+    username = i["username"]
+    password = i["password"]
+    url = i["url"]
 
 def main():
 
