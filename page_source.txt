@@ -143,7 +143,7 @@
 	
 		
 		
-	<script>var loginData = {"validUser":true,"guid":"6ff0316585e43221360221bfdf1c2816","auth":{"loggedin":true,"uid":"B023PXE6XR3AE9","nickname":"Sean Y.","fullname":"Sean Yan","email":"seanyan0915@gmail.com","school":{"_id":{"$oid":"50f5888cd76279186453cbc6"},"cn":"USA","ct":"Marietta","n":"Pope High School","nid":"130129001994","st":"GA","loc":[-84.45133,34.02189],"lmw":"libation","vbt":1,"vbd":1,"vbc":84013067,"state":"Georgia","country":"United States","url":"/schools/united-states/georgia/UPWIjNdieRhkU8vG/marietta/pope-high-school/","id":"UPWIjNdieRhkU8vG"}},"perms":{},"points":448925,"level":{"id":"L08","name":"Verbivore","milestone":1,"progress":95},"ima":"student","paid":true,"classes":{"expires":1654056000000,"paid":true,"ownerOf":[],"memberOf":[{"owner":{"uid":"A1TDSVSXZCAX71","nickname":"Coach Fuller"},"assignments":[{"visibleDate":"2021-08-16T11:00:00.000Z","notes":"Quiz on Thursday, August 26","dueDate":"2021-08-26T17:40:00.000Z","length":22,"type":"p","pctComplete":100,"url":"/lists/2475027/practice","listid":2475027,"firstActivity":"2021-08-21T18:38:56.419Z","name":"Anglo Saxon 2 (2021)","lastActivity":"2021-08-26T03:56:55.913Z","id":"611a9b4ad8d17f66b2d10ea2"},{"visibleDate":"2021-09-01T11:00:00.000Z","notes":"Practice for Mastery. The list CAN be used to help you reach your goal for Vocab Reward Points.","dueDate":"2021-09-10T17:59:00.000Z","length":22,"type":"p","pctComplete":100,"url":"/lists/2453988/practice","listid":2453988,"firstActivity":"2021-09-08T21:06:21.036Z","name":"Anglo Saxon 3","lastActivity":"2021-09-10T03:43:01.603Z","id":"612f924cfa3bb45e11ecd722"},{"visibleDate":"2021-09-01T11:00:00.000Z","notes":"NO quiz for this list, but it CAN be used to help you reach your goal for Vocab Reward Points","dueDate":"2021-10-30T03:59:00.000Z","length":100,"type":"p","pctComplete":46,"url":"/lists/23400/practice","listid":23400,"firstActivity":"2021-09-03T20:47:47.550Z","name":"100 Top \"SAT\" Words","lastActivity":"2021-09-15T21:07:04.867Z","id":"612f92adfa3bb45e11ece2cc"},{"visibleDate":"2021-09-14T11:00:00.000Z","notes":"Practice for 100% mastery. The questions you answer correctly will count toward reward points. Quiz on Friday, September 24.","dueDate":"2021-09-24T17:59:00.000Z","length":22,"type":"p","pctComplete":0,"url":"/lists/2507206/practice","listid":2507206,"name":"Anglo Saxon List 4","id":"6140a9eab2a2470fb85e6f0e"}],"enddate":20220531,"name":"2nd Period H Brit Lit","id":"XeezsjgurRq","startdate":20210812,"activeSubscription":true}],"incompleteAssignmentCount":2,"assignmentCount":2,"lastmodification":1631627754290,"empty":false,"activeSubscription":true},"notifications":[{"code":"assignments-pending","count":0,"id":"61426567cc59216266cb904f"}],"visitid":"61426567cc59216266cb904e","maxage":22314709};</script>	
+	<script>var loginData = {"validUser":true,"guid":"3aa26ff06a9bb2b91e648d21a8e566fe","auth":{"loggedin":true,"uid":"B023PXE6XR3AE9","nickname":"Sean Y.","fullname":"Sean Yan","email":"seanyan0915@gmail.com","school":{"_id":{"$oid":"50f5888cd76279186453cbc6"},"cn":"USA","ct":"Marietta","n":"Pope High School","nid":"130129001994","st":"GA","loc":[-84.45133,34.02189],"lmw":"exhort","vbt":1,"vbd":1,"vbc":84013067,"state":"Georgia","country":"United States","url":"/schools/united-states/georgia/UPWIjNdieRhkU8vG/marietta/pope-high-school/","id":"UPWIjNdieRhkU8vG"}},"perms":{},"points":448925,"level":{"id":"L08","name":"Verbivore","milestone":1,"progress":95},"ima":"student","paid":true,"classes":{"expires":1654056000000,"paid":true,"ownerOf":[],"memberOf":[{"owner":{"uid":"A1TDSVSXZCAX71","nickname":"Coach Fuller"},"assignments":[{"visibleDate":"2021-08-16T11:00:00.000Z","notes":"Quiz on Thursday, August 26","dueDate":"2021-08-26T17:40:00.000Z","length":22,"type":"p","pctComplete":100,"url":"/lists/2475027/practice","listid":2475027,"firstActivity":"2021-08-21T18:38:56.419Z","name":"Anglo Saxon 2 (2021)","lastActivity":"2021-08-26T03:56:55.913Z","id":"611a9b4ad8d17f66b2d10ea2"},{"visibleDate":"2021-09-01T11:00:00.000Z","notes":"Practice for Mastery. The list CAN be used to help you reach your goal for Vocab Reward Points.","dueDate":"2021-09-10T17:59:00.000Z","length":22,"type":"p","pctComplete":100,"url":"/lists/2453988/practice","listid":2453988,"firstActivity":"2021-09-08T21:06:21.036Z","name":"Anglo Saxon 3","lastActivity":"2021-09-10T03:43:01.603Z","id":"612f924cfa3bb45e11ecd722"},{"visibleDate":"2021-09-01T11:00:00.000Z","notes":"NO quiz for this list, but it CAN be used to help you reach your goal for Vocab Reward Points","dueDate":"2021-10-30T03:59:00.000Z","length":100,"type":"p","pctComplete":46,"url":"/lists/23400/practice","listid":23400,"firstActivity":"2021-09-03T20:47:47.550Z","name":"100 Top \"SAT\" Words","lastActivity":"2021-09-15T21:07:04.867Z","id":"612f92adfa3bb45e11ece2cc"},{"visibleDate":"2021-09-14T11:00:00.000Z","notes":"Practice for 100% mastery. The questions you answer correctly will count toward reward points. Quiz on Friday, September 24.","dueDate":"2021-09-24T17:59:00.000Z","length":22,"type":"p","pctComplete":0,"url":"/lists/2507206/practice","listid":2507206,"name":"Anglo Saxon List 4","id":"6140a9eab2a2470fb85e6f0e"}],"enddate":20220531,"name":"2nd Period H Brit Lit","id":"XeezsjgurRq","startdate":20210812,"activeSubscription":true}],"incompleteAssignmentCount":2,"assignmentCount":2,"lastmodification":1631627754290,"empty":false,"activeSubscription":true},"notifications":[{"code":"assignments-pending","count":2,"id":"61427515cc59216266cc9643"}],"visitid":"61427515cc59216266cc9641","maxage":22310694};</script>	
 	
 	
 
@@ -338,41 +338,18 @@ if ('URLSearchParams' in window) {
 <div id="challenge" data-wordlistid="23400" class="with-game navigator-container" data-activity-type="p" data-module="vcom/challenge/challenge">
 
 
-<div tabindex="0" class="vcom-challenge resizable large"><div class="questionPane" style="transition: all 0.3s ease 0s; transform: translate3d(0%, 0px, 0px);"><div class="challenge-slide wide audio-enabled active selected" data-slide-type="choice" data-slot-id="0" style="transform: translate3d(0%, 0px, 0px);">
-<div class="wrapper">
-<div class="slider">
-<section class="left">
-<div class="question typeD">
-<div class="mode"><span class="review">REVIEW</span>: <span class="pointValue">25</span> POINTS</div>
-
-<div class="questionContent">
-</div>
-
-<div class="instructions">
-<strong>brazen</strong> means:
-	</div>
-
-<div class="choices">
-<a href="javascript:void(0)" accesskey="1A" nonce="9pqgxw">many and varied</a><a href="javascript:void(0)" accesskey="2B" nonce="bcrl70">thickly covered with ingrained dirt or soot</a><a href="javascript:void(0)" accesskey="3C" nonce="mbjs6d">unrestrained by convention or propriety</a><a href="javascript:void(0)" accesskey="4D" nonce="kghvpx">aged or processed</a></div>
-<a class="vcom_questionRater" href="javascript:void(0)">Improve this question</a></div>
-<div class="status"></div>
-</section>
-
-<section class="right blurb-container"></section>
-
-</div></div></div></div><div style="top: 0px; bottom: 0px; right: 0px; position: absolute; width: 40px;"><button class="next"><span>›</span></button></div><footer><div class="challenge-history"><span class="round">Round 1:</span><ul><li class="enabled selected" data-slide="0"><span>1</span></li><li><span>2</span></li><li><span>3</span></li><li><span>4</span></li><li><span>5</span></li><li><span>6</span></li><li><span>7</span></li><li><span>8</span></li><li><span>9</span></li><li><span>10</span></li></ul></div></footer><div class="wordtools statusbar hidden"><header><div><div class="pane"><a title="view your learning progress" class="wordprogress"><canvas class="progress"></canvas>Your progress on: <span></span>
+<div tabindex="0" class="vcom-challenge resizable large loading"><div class="questionPane" style="transition: all 0s ease 0s; transform: translate3d(100%, 0px, 0px);"></div><div style="top: 0px; bottom: 0px; right: 0px; position: absolute; width: 40px;"><button class="next"><span>›</span></button></div><footer><div class="challenge-history"><span class="round"></span><ul></ul></div></footer><div class="wordtools statusbar hidden"><header><div><div class="pane"><a title="view your learning progress" class="wordprogress"><canvas class="progress"></canvas>Your progress on: <span></span>
 				</a><div class="priority"><span>Learning Priority:</span><div class="button-group">
 					<label title="Vocabulary.com automatically determines how often you see this word based on your performance." class="selected"><input type="radio" name="_lp" checked="checked" value="0"><span>Auto</span></label>
 			    	<label title="Focus more on this word."><input type="radio" name="_lp" value="1"><span>High</span></label>
 			    	<label title="Avoid questions on this word."><input type="radio" name="_lp" value="-1"><span>Low</span></label>
 				</div></div>
 				<div class="tools-v2"></div>
-				</div></div></header></div><div class="statusbar nowplaying" data-list-id="23400" data-activity-type="p">
+				</div></div></header></div><div class="statusbar hidden nowplaying allwords">
 				<header><div>
 				<div class="pane">
-				<div role="button" class="nowplaying"><canvas class="progress" width="96" style="" height="96"></canvas><span class="label">Currently Playing</span><span class="title">Practice: 100 Top "SAT" Words</span></div>
-				<div class="tools-v2"><a class="gotolist button v2" role="button" href="/lists/23400"><i class="ss-list"></i><span> Return to List</span></a>
-			<a class="replay button v2" role="button" data-action="restart-practice"><i class="ss-replay"></i><span> Start Over</span></a></div>
+				<div role="button" class="nowplaying"><canvas class="progress" width="96" style="" height="96"></canvas><span class="label">Currently Playing</span><span class="title">The Challenge: All Words</span></div>
+				<div class="tools-v2"></div>
 				</div>
 				</div></header><section data-module="vcom/challenge/status" data-method="activityList"><div class="listoflists"></div></section></div></div></div>
 
@@ -629,7 +606,7 @@ if ('URLSearchParams' in window) {
 
 
 
-<div class="push-notification warning" style="display: block; opacity: 0.861785;">
+<div class="push-notification warning" style="display: block; opacity: 0.890215;">
 <header>Assignments Pending</header>
 <section>
 <p>You have one or more assignments to complete!</p>

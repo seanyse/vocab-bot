@@ -3,8 +3,7 @@ import json
 
 f = open('data.json',)
 data = json.load(f)
-for i in data:
-    
+for i in data["data"]:
     username = i["username"]
     password = i["password"]
     url = i["url"]
