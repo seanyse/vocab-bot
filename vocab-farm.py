@@ -1,5 +1,6 @@
-from vocab_methods import seleniumMethods
+from vocab_methods import requestMethods, seleniumMethods
 import json
+import time
 
 f = open('data.json',)
 data = json.load(f)
@@ -11,7 +12,11 @@ for i in data["data"]:
 def main():
 
     browser = seleniumMethods(username, password, url)
+    request = requestMethods()
+
     browser.init_browser()
+    request.init_req()
+
     status = browser.login()
 
     while True:
@@ -22,7 +27,16 @@ def main():
             print("Login Failed, Retrying")
             status = browser.login()
 
-    browser.checkValue()
+    q_number = browser.checkValue()
+    question = browser.getQuestion()
+
+    print(q_number)
+    print(question)
+
+    time.sleep(10000)
+
+    # answer = request.getAnswer()
+    # browser.
 
 # driver.get(url)
 # time.sleep(.5)
