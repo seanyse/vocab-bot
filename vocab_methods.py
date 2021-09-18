@@ -1,4 +1,5 @@
 from logging import exception
+from selenium.common.exceptions import NoSuchAttributeException
 from seleniumwire import webdriver
 import time
 from bs4 import BeautifulSoup
@@ -69,8 +70,9 @@ class seleniumMethods:
         response = str(response)
 
         print(response)
-        if response == "(200,)":
+        if response == "(200,)" or response == "(101,)":
             return True
+
         else:
             return False
 
@@ -102,10 +104,35 @@ class seleniumMethods:
         # print(place)
     
     def getType(self):
-        print('working')
+        
+        WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.CLASS_NAME, "page")))
+
+        soup = BeautifulSoup(driver.page_source, "html.parser")
+
+        # finds mcq question
+        for strong in soup('div', {'class':'instructions'}):
+            while True:
+                try:
+                    strong.find('strong', {'class':''}).text
+                    return "MCQ"
+                except NoSuchAttributeException or AttributeError:
+                    try:
+                        soup.find('div', {'class':"sentence blanked"}).value()
+                        return "PARAGRAPH"
+
+                    except NoSuchAttributeException or AttributeError:
+                        try:
+                            return "Method Not Supported"
+                        except:
+                            return "Error Returning"
 
 
-    def getQuestion(self):
+        
+
+            
+
+
+    def mcqGetQuestionData(self, question_num):
         
         WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.CLASS_NAME, "page")))
 
@@ -114,14 +141,36 @@ class seleniumMethods:
         for strong in soup('div', {'class':'instructions'}):
             question = strong.find('strong', {'class':''}).text
 
-        return question
+        # gets answer choices
+        x = 1
+        choices = ''
+        while x <= 4:
+            x_str = str(x)
+            q_num_str = str(question_num)
 
+            choice = driver.find_element_by_xpath('//*[@id="challenge"]/div/div[1]/div[' + q_num_str + ']/div/div/section[1]/div[1]/div[4]/a[' + x_str + ']').text()
+            choice = str(choice)
+            choices = choices + "," + choice
+            x+=1
         
+        print(question + choices)
+        return question + choices
+        
+
+
+    def getChoices(self):
+
+        WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.CLASS_NAME, "page")))
+
+        soup = BeautifulSoup(driver.page_source, "html.parser")
+
     def mcqSubmit(question_num):
 
         driver.find_element_by_xpath('//*[@id="challenge"]/div/div[1]/div[' + question_num + ']/div/div/section[1]/div[1]/div[4]/a[1]').click()
 
+    def getParagraphData():
 
+        print("working")
 
 class requestMethods():
 
