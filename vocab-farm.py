@@ -30,16 +30,14 @@ def main():
     q_number = browser.checkValue()
     type = browser.getType()
 
+    print("Type is " + type)
     if type == "MCQ":
-        question = browser.mcqGetQuestionData(q_number)
+        questionData = browser.mcqGetQuestionData(q_number)
     elif type == "PARAGRAPH":
-        question = browser.mcqGetParagraphData(q_number)
-        
-    print(q_number)
-    print(question)
-
-
-    answer = request.getAnswer()
+        questionData = browser.mcqGetParagraphData(q_number)
+    elif
+    questionData = str(questionData)
+    answer = request.getAnswer(questionData)
     # browser.
 
 # driver.get(url)

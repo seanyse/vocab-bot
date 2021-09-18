@@ -82,26 +82,26 @@ class seleniumMethods:
 
     def checkValue(self):
 
-        # button position changes every question based on which question it is, scrapes question to build xpath for next question button
-        driver.get(self.url)
+        while True:
+            try:
+                # button position changes every question based on which question it is, scrapes question to build xpath for next question button
+                driver.get(self.url)
 
-        # html = driver.page_source
-        # fileToWrite = open("page_source.txt", "w")
-        # fileToWrite.write(html)
-        # fileToWrite.close()
-        WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.CLASS_NAME, "body-wrapper")))
-        soup = BeautifulSoup(driver.page_source, "html.parser")
+                WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.CLASS_NAME, "body-wrapper")))
+                soup = BeautifulSoup(driver.page_source, "html.parser")
 
-        
-        for span_tag in soup('li', {'class':'enabled selected'}):
-            field = span_tag.find('span', {'class':''}).text
-        
-            
+                
+                for span_tag in soup('li', {'class':'enabled selected'}):
+                    field = span_tag.find('span', {'class':''}).text
+                
+                
+                return field
+            except:
+                pass
+                
 
-        return field
-
-        # place = soup.find('li', {"class":"enabled selected"}).get('value')
-        # print(place)
+            # place = soup.find('li', {"class":"enabled selected"}).get('value')
+            # print(place)
     
     def getType(self):
         
@@ -115,16 +115,25 @@ class seleniumMethods:
                 try:
                     strong.find('strong', {'class':''}).text
                     return "MCQ"
-                except NoSuchAttributeException or AttributeError:
+                except:
                     try:
-                        soup.find('div', {'class':"sentence blanked"}).value()
+                        soup.find('div', {'class':"sentence"}).value()
                         return "PARAGRAPH"
 
-                    except NoSuchAttributeException or AttributeError:
+                    except :
                         try:
-                            return "Method Not Supported"
+                            soup.find('div', {'class': "sentence blanked"}).value()
+                            return "PARAGRAPH"
                         except:
-                            return "Error Returning"
+                            try:
+                                soup.find('div', {'class': "label"}).text
+                                return "AUDIO"
+                            except:
+                                try:
+                                    soup.find('div', {'class':"sentence"}).text
+                                    return "PARAGRAPHMCQ"
+                                except:
+                                    return "Error Returning"
 
 
         
@@ -148,7 +157,7 @@ class seleniumMethods:
             x_str = str(x)
             q_num_str = str(question_num)
 
-            choice = driver.find_element_by_xpath('//*[@id="challenge"]/div/div[1]/div[' + q_num_str + ']/div/div/section[1]/div[1]/div[4]/a[' + x_str + ']').text()
+            choice = driver.find_element_by_xpath('//*[@id="challenge"]/div/div[1]/div[' + q_num_str + ']/div/div/section[1]/div[1]/div[4]/a[' + x_str + ']').text
             choice = str(choice)
             choices = choices + "," + choice
             x+=1
@@ -170,7 +179,9 @@ class seleniumMethods:
 
     def getParagraphData():
 
-        print("working")
+        print("working on it")
+
+        return "working on it"
 
 class requestMethods():
 
@@ -197,13 +208,34 @@ class requestMethods():
 
 
 
-    def getAnswer(definition):
+    def getAnswer(self, definition):
         
-        url = "https://www.vocabulary.com/dictionary" + definition
+        question_data = definition.split(",")
+        url = "https://www.vocabulary.com/dictionary/" + question_data[0]
+        url_2 = "https://www.thesaurus.com/browse/" + question_data[0]
+        print(url)
+        print(url_2)
 
         r = request.get(url, headers=headers)
 
         soup = BeautifulSoup(r.text, "html.parser")
+        short_def = soup.find('p', {'class': "short"}).text
+        long_def = soup.find('p', {'class': "long"}).text
+
+        print(short_def)
+        print(long_def)
+
+        r = request.get(url_2, headers=headers)
+
+        soup = BeautifulSoup(r.text, "html.parser")
+
+        synonyms = ""
+        for ultag in soup.find_all('ul', {'class': 'css-n85ndd e1ccqdb60'}):
+            for litag in ultag.find_all('li'):
+                print(litag.text)
+
+        print(synonyms)
+        return short_def + ":" + long_def + ":" + synonyms
 
 
 class logic():
