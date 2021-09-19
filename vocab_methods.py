@@ -251,7 +251,10 @@ class logicMethods():
         print("Def start start")
         print(questionData)
         print(answerData)
-        print("working")
+        
+        
+
+        
 
 
 
