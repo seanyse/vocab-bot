@@ -34,14 +34,28 @@ def main():
     print("Type is " + type)
     if type == "MCQ":
         questionData = browser.mcqGetQuestionData(q_number)
+
+        questionData = str(questionData)
+        answerData = request.getAnswerData(questionData)
+        
+        logic.getAnswer(questionData, answerData)
+        
     elif type == "PARAGRAPH":
         questionData = browser.mcqGetParagraphData(q_number)
-    else:
-        print("not solvable")
-    questionData = str(questionData)
-    answerData = request.getAnswerData(questionData)
+
+        questionData = str(questionData)
+        answerData = request.getAnswerData(questionData)
     
-    logic.getAnswer(questionData, answerData)
+        logic.getAnswer(questionData, answerData)
+
+    elif type == "SENTANCEMCQ":
+        print("not solvable")
+    elif type == "AUDIO":
+        print("not solvable")
+    elif type == "IDK":
+        print("not solvable")
+
+    
 
 
 
