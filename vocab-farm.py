@@ -1,4 +1,4 @@
-from vocab_methods import requestMethods, seleniumMethods
+from vocab_methods import requestMethods, seleniumMethods, logicMethods
 import json
 import time
 
@@ -13,6 +13,7 @@ def main():
 
     browser = seleniumMethods(username, password, url)
     request = requestMethods()
+    logic = logicMethods()
 
     browser.init_browser()
     request.init_req()
@@ -35,24 +36,14 @@ def main():
         questionData = browser.mcqGetQuestionData(q_number)
     elif type == "PARAGRAPH":
         questionData = browser.mcqGetParagraphData(q_number)
-    elif
+    else:
+        print("not solvable")
     questionData = str(questionData)
-    answer = request.getAnswer(questionData)
-    # browser.
-
-# driver.get(url)
-# time.sleep(.5)
-
-# change = 0
-# while True:
-#     if change == 10:
-#         change = 0
-
-#     change += 1
-#     refresh = 0
+    answerData = request.getAnswerData(questionData)
     
-#     while True:
-#         try:
+    logic.getAnswer(questionData, answerData)
+
+
 
 #             driver.execute_script("window.scrollTo(0, window.scrollY + 50)")
 #             time.sleep(.5)

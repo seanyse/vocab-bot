@@ -117,12 +117,12 @@ class seleniumMethods:
                     return "MCQ"
                 except:
                     try:
-                        soup.find('div', {'class':"sentence"}).value()
-                        return "PARAGRAPH"
+                        soup.find('div', {'class':"sentence"}).text
+                        return "SENTANCEMCQ"
 
                     except :
                         try:
-                            soup.find('div', {'class': "sentence blanked"}).value()
+                            soup.find('div', {'class': "sentence blanked"}).text
                             return "PARAGRAPH"
                         except:
                             try:
@@ -130,8 +130,8 @@ class seleniumMethods:
                                 return "AUDIO"
                             except:
                                 try:
-                                    soup.find('div', {'class':"sentence"}).text
-                                    return "PARAGRAPHMCQ"
+                                    
+                                    return "IDK"
                                 except:
                                     return "Error Returning"
 
@@ -208,11 +208,11 @@ class requestMethods():
 
 
 
-    def getAnswer(self, definition):
+    def getAnswerData(self, definition):
         
         question_data = definition.split(",")
         url = "https://www.vocabulary.com/dictionary/" + question_data[0]
-        url_2 = "https://www.thesaurus.com/browse/" + question_data[0]
+        url_2 = "https://www.merriam-webster.com/thesaurus/" + question_data[0]
         print(url)
         print(url_2)
 
@@ -230,21 +230,27 @@ class requestMethods():
         soup = BeautifulSoup(r.text, "html.parser")
 
         synonyms = ""
-        for ultag in soup.find_all('ul', {'class': 'css-n85ndd e1ccqdb60'}):
+        for ultag in soup.find_all('ul', {'class':'mw-list'}):
             for litag in ultag.find_all('li'):
-                print(litag.text)
+                synonyms = synonyms + (litag.text)
 
+
+        
+        synonyms = synonyms.strip()
+        synonyms = synonyms.replace(" ", "").replace("\n", " ")
         print(synonyms)
         return short_def + ":" + long_def + ":" + synonyms
 
 
-class logic():
+class logicMethods():
 
     def __init__(self):
         pass
 
-    def getPercentage(self):
-
+    def getAnswer(self, questionData, answerData):
+        print("Def start start")
+        print(questionData)
+        print(answerData)
         print("working")
 
 
