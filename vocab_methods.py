@@ -248,6 +248,8 @@ class logicMethods():
         pass
 
     def getAnswer(self, questionData, answerData):
+
+        # calc percentage, highest % gets answer
         print("Def start start")
         print(questionData)
         print(answerData)
