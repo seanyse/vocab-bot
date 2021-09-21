@@ -247,12 +247,59 @@ class logicMethods():
     def __init__(self):
         pass
 
+   
+
     def getAnswer(self, questionData, answerData):
 
         # calc percentage, highest % gets answer
         print("Def start start")
         print(questionData)
         print(answerData)
+
+        questionData = questionData.split(",")
+        
+
+        question_1 = questionData[1].split(" ")
+        question_2 = questionData[2].split(" ")
+        question_3 = questionData[3].split(" ")
+        question_4 = questionData[4].split(" ")
+
+        print(len(question_1))
+        print(len(question_2))
+        print(len(question_3))
+        print(len(question_4))
+
+        num_1 = 0
+        num_2 = 0
+        num_3 = 0
+        num_4 = 0
+        
+        for x in range (0, len(question_1)):
+            temp_num = question_1[x].count(answerData)
+            num_1 += temp_num
+        for x in range (0, len(question_2)):
+            temp_num = question_2[x].count(answerData)
+            num_2 += temp_num
+        for x in range (0, len(question_3)):
+            temp_num = question_3[x].count(answerData)
+            num_3 += temp_num
+        for x in range (0, len(question_4)):
+            temp_num = question_4[x].count(answerData)
+            num_4 += temp_num
+
+        print(num_1)
+        print(num_2)
+        print(num_3)
+        print(num_4)
+        
+
+
+    def count_occurrences(self, word, sentence):
+        return sentence.lower().split().count(word)
+
+
+    
+
         
         
 

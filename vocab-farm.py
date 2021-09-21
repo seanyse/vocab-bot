@@ -47,7 +47,7 @@ def main():
         answerData = request.getAnswerData(questionData)
     
         logic.getAnswer(questionData, answerData)
-
+        
     elif type == "SENTANCEMCQ":
         print("not solvable")
     elif type == "AUDIO":
