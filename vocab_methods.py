@@ -1,6 +1,6 @@
-from logging import exception
+from logging import exception, fatal
 from selenium.common.exceptions import NoSuchAttributeException
-from seleniumwire import webdriver
+from selenium import webdriver
 import time
 from bs4 import BeautifulSoup
 from selenium.webdriver.common.keys import Keys
@@ -28,8 +28,8 @@ class seleniumMethods:
         options.add_argument('--ignore-certificate-errors')
         options.add_argument('--allow-running-insecure-content')
         options.add_argument("--disable-extensions")
-        options.add_argument("--window-size=900,700")
-        options.add_argument("--window-position=600,150")
+        options.add_argument("--window-size=1100,900")
+        options.add_argument("--window-position=500,150")
         options.add_argument("--proxy-server='direct://'")
         options.add_argument("--proxy-bypass-list=*")
         options.add_argument("--start-minimized")
@@ -62,19 +62,10 @@ class seleniumMethods:
 
         driver.find_element_by_xpath('//*[@id="loginform"]/div[6]/button').submit()
 
-        # check if login valid
-        for request in driver.requests:  
-            if request.response:  
-                response = request.response.status_code,  
+        # add check login valid
+        return True
 
-        response = str(response)
-
-        print(response)
-        if response == "(200,)" or response == "(101,)":
-            return True
-
-        else:
-            return False
+      
 
     def changeURL(self, url):
 
@@ -86,6 +77,7 @@ class seleniumMethods:
             try:
                 # button position changes every question based on which question it is, scrapes question to build xpath for next question button
                 driver.get(self.url)
+                print("checkvalue")
 
                 WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.CLASS_NAME, "body-wrapper")))
                 soup = BeautifulSoup(driver.page_source, "html.parser")
@@ -97,6 +89,7 @@ class seleniumMethods:
                 
                 return field
             except:
+                time.sleep(3)
                 pass
                 
 
@@ -110,32 +103,34 @@ class seleniumMethods:
         soup = BeautifulSoup(driver.page_source, "html.parser")
 
         # finds mcq question
-        for strong in soup('div', {'class':'instructions'}):
-            while True:
-                try:
-                    strong.find('strong', {'class':''}).text
-                    return "MCQ"
-                except:
+        try:
+            for strong in soup('div', {'class':'instructions'}):
+                while True:
                     try:
-                        soup.find('div', {'class':"sentence"}).text
-                        return "SENTANCEMCQ"
-
-                    except :
+                        strong.find('strong', {'class':''})
+                        return "MCQ"
+                    except:
                         try:
-                            soup.find('div', {'class': "sentence blanked"}).text
-                            return "PARAGRAPH"
-                        except:
+                            soup.find('div', {'class':"sentence"})
+                            return "SENTANCEMCQ"
+
+                        except :
                             try:
-                                soup.find('div', {'class': "label"}).text
-                                return "AUDIO"
+                                soup.find('div', {'class': "sentence blanked"})
+                                return "PARAGRAPH"
                             except:
                                 try:
-                                    
-                                    return "IDK"
+                                    soup.find('div', {'class': "spelltheword"})
+                                    return "AUDIO"
                                 except:
-                                    return "Error Returning"
+                                    try:
+                                        
+                                        return "IDK"
+                                    except:
+                                        return "Error Returning"
 
-
+        except Exception as e:
+            print(e)
         
 
             
@@ -143,13 +138,25 @@ class seleniumMethods:
 
     def mcqGetQuestionData(self, question_num):
         
-        WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.CLASS_NAME, "page")))
+        WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.CLASS_NAME, "choices")))
+        time.sleep(3)
 
         soup = BeautifulSoup(driver.page_source, "html.parser")
+        
+        try:
+            for strong in soup('div', {'class':'instructions'}):
+                question = strong.find('strong', {'class':''}).text
+                print("question is" + question + "1")
 
-        for strong in soup('div', {'class':'instructions'}):
-            question = strong.find('strong', {'class':''}).text
-
+            
+        except:
+            print("error getting question data, retrying")
+            
+            soup = BeautifulSoup(driver.page_source, "html.parser")
+            question = soup.find('div', {'class': "sentence"}).text
+            print("question is" + question + "2")
+            
+                
         # gets answer choices
         x = 1
         choices = ''
@@ -164,24 +171,30 @@ class seleniumMethods:
         
         print(question + choices)
         return question + choices
+
+
+    def mcqSubmit(self, question_num, answer_num):
+
+        question_num = str(question_num)
+        answer_num = str(answer_num)
+
+        try:
+            driver.find_element_by_xpath('//*[@id="challenge"]/div/div[1]/div[' + question_num + ']/div/div/section[1]/div[1]/div[4]/a[' + answer_num + ']').click()
+        except:
+            return False
         
-
-
-    def getChoices(self):
-
-        WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.CLASS_NAME, "page")))
-
-        soup = BeautifulSoup(driver.page_source, "html.parser")
-
-    def mcqSubmit(question_num):
-
-        driver.find_element_by_xpath('//*[@id="challenge"]/div/div[1]/div[' + question_num + ']/div/div/section[1]/div[1]/div[4]/a[1]').click()
-
     def getParagraphData():
 
         print("working on it")
 
         return "working on it"
+    
+    def nextQuestion(self):
+        try:
+            driver.find_element_by_xpath('//*[@id="challenge"]/div/div[2]/button').click()
+            return True
+        except:
+            return False
 
 class requestMethods():
 
@@ -218,10 +231,15 @@ class requestMethods():
 
         r = request.get(url, headers=headers)
 
-        soup = BeautifulSoup(r.text, "html.parser")
-        short_def = soup.find('p', {'class': "short"}).text
-        long_def = soup.find('p', {'class': "long"}).text
-
+        # get answer
+        try:
+            soup = BeautifulSoup(r.text, "html.parser")
+            short_def = soup.find('p', {'class': "short"}).text
+            long_def = soup.find('p', {'class': "long"}).text
+        except:
+            print("failed finding def")
+            short_def = ""
+            long_def = ""
         print(short_def)
         print(long_def)
 
@@ -253,44 +271,69 @@ class logicMethods():
 
         # calc percentage, highest % gets answer
         print("Def start start")
+        
+
+        # removes all unncessary words
+        # answerData = ' '.join(answerData)
+
+        answerData = answerData.replace(" and ", "").replace(" or ", "").replace(" is ", "").replace(" was ", "").replace(" has ", "").replace(" a ", "").replace(" from ", "")
+
         print(questionData)
         print(answerData)
 
         questionData = questionData.split(",")
-        
 
         question_1 = questionData[1].split(" ")
         question_2 = questionData[2].split(" ")
         question_3 = questionData[3].split(" ")
         question_4 = questionData[4].split(" ")
 
-        print(len(question_1))
-        print(len(question_2))
-        print(len(question_3))
-        print(len(question_4))
-
         num_1 = 0
         num_2 = 0
         num_3 = 0
         num_4 = 0
-        
-        for x in range (0, len(question_1)):
-            temp_num = question_1[x].count(answerData)
-            num_1 += temp_num
-        for x in range (0, len(question_2)):
-            temp_num = question_2[x].count(answerData)
-            num_2 += temp_num
-        for x in range (0, len(question_3)):
-            temp_num = question_3[x].count(answerData)
-            num_3 += temp_num
-        for x in range (0, len(question_4)):
-            temp_num = question_4[x].count(answerData)
-            num_4 += temp_num
+
+        for x in range(0, len(question_1)):
+            if question_1[x] in answerData: 
+                num_1+=1
+                
+        for x in range(0, len(question_2)):
+            if question_2[x] in answerData: 
+                num_2+=1
+
+        for x in range(0, len(question_3)):
+            if question_3[x] in answerData: 
+                num_3+=1
+
+        for x in range(0, len(question_4)):
+            if question_4[x] in answerData: 
+                num_4+=1
+
 
         print(num_1)
         print(num_2)
         print(num_3)
         print(num_4)
+
+        num_1 = str(num_1)
+        num_2 = str(num_2)
+        num_3 = str(num_3)
+        num_4 = str(num_4)
+
+        num_total = num_1 + "," + num_2 + "," + num_3 + "," + num_4
+
+        num_total = num_total.split(",")
+        try:
+            max_value = max(num_total)
+            max_index = num_total.index(max_value)
+        except:
+            max_index = 1
+
+        max_index+=1
+        print("Index_mx is")
+        print(max_index)
+
+        return max_index
         
 
 

@@ -28,104 +28,77 @@ def main():
             print("Login Failed, Retrying")
             status = browser.login()
 
-    q_number = browser.checkValue()
-    type = browser.getType()
+    while True:
+        q_num = browser.checkValue()
+        print(q_num)
+        type = browser.getType()
 
-    print("Type is " + type)
-    if type == "MCQ":
-        questionData = browser.mcqGetQuestionData(q_number)
+        print("Type is " + type)
+        if type == "MCQ":
+            questionData = browser.mcqGetQuestionData(q_num)
 
-        questionData = str(questionData)
-        answerData = request.getAnswerData(questionData)
-        
-        logic.getAnswer(questionData, answerData)
-        
-    elif type == "PARAGRAPH":
-        questionData = browser.mcqGetParagraphData(q_number)
-
-        questionData = str(questionData)
-        answerData = request.getAnswerData(questionData)
-    
-        logic.getAnswer(questionData, answerData)
-        
-    elif type == "SENTANCEMCQ":
-        print("not solvable")
-    elif type == "AUDIO":
-        print("not solvable")
-    elif type == "IDK":
-        print("not solvable")
-
-    
-
-
-
-#             driver.execute_script("window.scrollTo(0, window.scrollY + 50)")
-#             time.sleep(.5)
-#             change_str = str(change)
-#             driver.find_element_by_xpath('//*[@id="challenge"]/div/div[1]/div[' + change_str + ']/div/div/section[1]/div[1]/div[5]/span[2]/a[1]').click()
+            questionData = str(questionData)
+            answerData = request.getAnswerData(questionData)
             
-# # //*[@id="challenge"]/div/div[1]/div[2]/div/div/section[1]/div[1]/div[5]/span[2]/a[1]
-#             break
-#         except Exception as e:
-#             time.sleep(2)
-#             print(f"retrying 3 {e}")
-#             refresh += 1
-#             if refresh == 5:
-#                 driver.refresh()
-#                 refresh = 0 
-#                 break
-            
-#     x = 1
-#     while True:
-#         time.sleep(.5)
-        
-#         try:
-#             str_x = str(x)
+            answer_num = logic.getAnswer(questionData, answerData)
 
-#             print("Submitting Answer")
-#             driver.execute_script("window.scrollTo(0, window.scrollY - 50)")
-#             time.sleep(1)
+            browser.mcqSubmit(q_num, answer_num)
 
-#             driver.find_element_by_xpath('//*[@id="challenge"]/div/div[1]/div[' + change_str + ']/div/div/section[1]/div[1]/div[4]/a[1]').click()
+            time.sleep(4)
+
+            next = browser.nextQuestion()
+
+            if next:
+                pass
+            else:
+                browser.mcqSubmit(1, answer_num)
+                next_1 = browser.nextQuestion()
+
+                if next_1:
+                    break
+                else:
+                    browser.mcqSubmit(2, answer_num)
+                    next_2 = browser.nextQuestion()
+
+                    if next_2:
+                        break
+                    else:
+                        browser.mcqSubmit(3, answer_num)
+                        next_3 = browser.nextQuestion()
+
+                        if next_3:
+                            break
+                            
+                        else:
+                            browser.mcqSubmit(4, answer_num)
+                            next_4 = browser.nextQuestion()
+
+                            if next_4:
+                                break
+                            else:
+                                break
+
             
 
-#             driver.find_element_by_xpath('//*[@id="challenge"]/div/div[1]/div[' + change_str + ']/div/div/section[1]/div[1]/div[4]/a[' + str_x + ']').click()
-#             x += 1
-
-#             # //*[@id="challenge"]/div/div[1]/div[2]/div/div/section[1]/div[1]/div[4]/a[1]
-#             if x == 5:
-#                 break
-
-#         except Exception as e:
-#             print(e)
-#             x += 1
-#             refresh += 1
-#             if refresh == 10:
-#                 driver.refresh()
-#                 refresh = 0 
-#                 x = 1
-#             try:
-#                 driver.find_element_by_xpath('//*[@id="challenge"]/div/div[2]/button').click()
-#             except:
-#                 pass
-                
-                
-#     while True:
-        
-#         try:
-#             driver.find_element_by_xpath('//*[@id="challenge"]/div/div[2]/button').click()
-#             time.sleep(1)
-#             driver.find_element_by_xpath('//*[@id="challenge"]/div/div[2]/button').click()
-#             break
-
-#         except:
             
-#             print("error fatal")
-#             time.sleep(5)
-#             refresh += 1
-#             if refresh == 10:
-#                 driver.refresh()
-#                 refresh = 0 
+            
+        elif type == "PARAGRAPH":
+            questionData = browser.mcqGetParagraphData(q_num)
+
+            questionData = str(questionData)
+            answerData = request.getAnswerData(questionData)
+        
+            logic.getAnswer(questionData, answerData)
+            
+        elif type == "SENTANCEMCQ":
+            print("not solvable")
+            
+        elif type == "AUDIO":
+            print("not solvable")
+        elif type == "IDK":
+            print("not solvable")
+
+        
    
 if __name__=="__main__":
     main()
