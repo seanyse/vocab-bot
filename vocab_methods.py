@@ -29,7 +29,7 @@ class seleniumMethods:
         options.add_argument('--allow-running-insecure-content')
         options.add_argument("--disable-extensions")
         options.add_argument("--window-size=1100,900")
-        options.add_argument("--window-position=500,150")
+        options.add_argument("--window-position=500,50")
         options.add_argument("--proxy-server='direct://'")
         options.add_argument("--proxy-bypass-list=*")
         options.add_argument("--start-minimized")
@@ -72,24 +72,30 @@ class seleniumMethods:
         driver.get(url)
 
     def checkValue(self):
-
+        
         while True:
             try:
                 # button position changes every question based on which question it is, scrapes question to build xpath for next question button
-                driver.get(self.url)
+                
                 print("checkvalue")
 
                 WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.CLASS_NAME, "body-wrapper")))
                 soup = BeautifulSoup(driver.page_source, "html.parser")
 
-                
+                field = ""
                 for span_tag in soup('li', {'class':'enabled selected'}):
                     field = span_tag.find('span', {'class':''}).text
                 
-                
-                return field
-            except:
-                time.sleep(.5)
+                if field == "":
+                    # time.sleep(2)
+                    pass
+                    
+
+                else:
+                    return field
+            except Exception as e:
+                print(e)
+                # time.sleep(1.5)
                 pass
                 
 
@@ -195,6 +201,9 @@ class seleniumMethods:
             return True
         except:
             return False
+
+    def changeURL(self, url):
+        driver.get(url)
 
 class requestMethods():
 

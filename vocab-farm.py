@@ -29,6 +29,7 @@ def main():
             status = browser.login()
 
     while True:
+        browser.changeURL(url)
         q_num = browser.checkValue()
         print(q_num)
         type = browser.getType()
@@ -51,32 +52,17 @@ def main():
             if next:
                 pass
             else:
-                browser.mcqSubmit(1, answer_num)
-                next_1 = browser.nextQuestion()
+                browser.mcqSubmit(q_num, 1)
+                time.sleep(1)
+                browser.mcqSubmit(q_num, 2)
+                time.sleep(1)
+                browser.mcqSubmit(q_num, 3)
+                time.sleep(1)
+                browser.mcqSubmit(q_num, 4)
+                time.sleep(1)
+                browser.nextQuestion()
+                time.sleep(1)
 
-                if next_1:
-                    break
-                else:
-                    browser.mcqSubmit(2, answer_num)
-                    next_2 = browser.nextQuestion()
-
-                    if next_2:
-                        break
-                    else:
-                        browser.mcqSubmit(3, answer_num)
-                        next_3 = browser.nextQuestion()
-
-                        if next_3:
-                            break
-                            
-                        else:
-                            browser.mcqSubmit(4, answer_num)
-                            next_4 = browser.nextQuestion()
-
-                            if next_4:
-                                break
-                            else:
-                                break
 
             
 
