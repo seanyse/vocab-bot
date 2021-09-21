@@ -89,7 +89,7 @@ class seleniumMethods:
                 
                 return field
             except:
-                time.sleep(3)
+                time.sleep(.5)
                 pass
                 
 
