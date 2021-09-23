@@ -28,12 +28,14 @@ def main():
             print("Login Failed, Retrying")
             status = browser.login()
 
+    browser.changeURL(url)
+
     while True:
-        browser.changeURL(url)
+        
         q_num = browser.checkValue()
         print(q_num)
         type = browser.getType()
-
+        
         print("Type is " + type)
         if type == "MCQ":
             questionData = browser.mcqGetQuestionData(q_num)
@@ -44,8 +46,6 @@ def main():
             answer_num = logic.getAnswer(questionData, answerData)
 
             browser.mcqSubmit(q_num, answer_num)
-
-            time.sleep(4)
 
             next = browser.nextQuestion()
 
@@ -59,9 +59,11 @@ def main():
                 browser.mcqSubmit(q_num, 3)
                 time.sleep(1)
                 browser.mcqSubmit(q_num, 4)
-                time.sleep(1)
+                time.sleep(1.5)
                 browser.nextQuestion()
-                time.sleep(1)
+
+
+                
 
 
             

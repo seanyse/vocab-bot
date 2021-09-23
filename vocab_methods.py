@@ -79,6 +79,7 @@ class seleniumMethods:
                 
                 print("checkvalue")
 
+                self.nextQuestion()
                 WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.CLASS_NAME, "body-wrapper")))
                 soup = BeautifulSoup(driver.page_source, "html.parser")
 
@@ -107,6 +108,8 @@ class seleniumMethods:
         WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.CLASS_NAME, "page")))
 
         soup = BeautifulSoup(driver.page_source, "html.parser")
+
+        self.nextQuestion()
 
         # finds mcq question
         try:
@@ -169,7 +172,6 @@ class seleniumMethods:
         while x <= 4:
             x_str = str(x)
             q_num_str = str(question_num)
-
             choice = driver.find_element_by_xpath('//*[@id="challenge"]/div/div[1]/div[' + q_num_str + ']/div/div/section[1]/div[1]/div[4]/a[' + x_str + ']').text
             choice = str(choice)
             choices = choices + "," + choice
