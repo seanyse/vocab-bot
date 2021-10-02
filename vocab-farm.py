@@ -82,7 +82,18 @@ def main():
             print("not solvable")
             
         elif type == "AUDIO":
-            print("not solvable")
+            answer = browser.audioGetAnswer()
+            browser.audioSubmit(q_num, answer)
+
+            next = browser.nextQuestion()
+
+            if next:
+                pass
+            else:
+                print("jere")
+                browser.audioGiveUp()
+                browser.nextQuestion()
+
         elif type == "IDK":
             print("not solvable")
 

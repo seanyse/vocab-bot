@@ -108,39 +108,55 @@ class seleniumMethods:
         WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.CLASS_NAME, "page")))
 
         soup = BeautifulSoup(driver.page_source, "html.parser")
-
+        
         self.nextQuestion()
 
+        q_num = self.checkValue()
+        q_num = str(q_num)
         # finds mcq question
-        try:
-            for strong in soup('div', {'class':'instructions'}):
-                while True:
-                    try:
-                        strong.find('strong', {'class':''})
-                        return "MCQ"
-                    except:
-                        try:
-                            soup.find('div', {'class':"sentence"})
-                            return "SENTANCEMCQ"
+        # try:
+        #     try:
+        #         soup.find('input', {'type': "text"})
+        #         return "AUDIO"
+        #     except:
+        #         try:
+        #             soup.find('div', {'class':"sentence"})
+        #             return "SENTANCEMCQ"
 
-                        except :
-                            try:
-                                soup.find('div', {'class': "sentence blanked"})
-                                return "PARAGRAPH"
-                            except:
-                                try:
-                                    soup.find('div', {'class': "spelltheword"})
-                                    return "AUDIO"
-                                except:
-                                    try:
+        #         except :
+        #             try:
+        #                 soup.find('div', {'class': "sentence blanked"})
+        #                 return "PARAGRAPH"
+        #             except:
+        #                 for strong in soup('div', {'class':'instructions'}):
+        #                     while True:
+        #                         try:
+        #                             strong.find('strong', {'class':''})
+        #                             return "MCQ"
+        #                         except:
+        #                             try:
                                         
-                                        return "IDK"
-                                    except:
-                                        return "Error Returning"
+        #                                 return "IDK"
+        #                             except:
+        #                                 return "Error Returning"
 
-        except Exception as e:
-            print(e)
-        
+        # except Exception as e:
+        #     print(e)
+
+        try:
+            driver.find_element_by_xpath('//*[@id="challenge"]/div/div[1]/div[' + q_num + ']/div/div/section[1]/div[1]/div[2]/div[2]/input')
+            return "AUDIO"
+        except:
+            try:
+                driver.find_element_by_xpath('//*[@id="challenge"]/div/div[1]/div[' + q_num + ']/div/div/section[1]/div[1]/div[4]/a[1]')
+                return "MCQ"
+                driver.find_element_by_xpath('//*[@id="challenge"]/div/div[1]/div[4]/div/div/section[1]/div[1]/div[4]/a[1]')
+                
+            except:
+                try:
+                    return "IDK"
+                except:
+                    return "IDK FATAL"
 
             
 
@@ -154,16 +170,20 @@ class seleniumMethods:
         
         try:
             for strong in soup('div', {'class':'instructions'}):
-                question = strong.find('strong', {'class':''}).text
+                question = strong.find('strong', {'':''}).text
                 print("question is" + question + "1")
 
             
         except:
-            print("error getting question data, retrying")
+
+            for strong in soup('div', {'class':'sentence'}):
+                try:
+                    question = strong.find('strong', {'':''}).text
+                    
+                except Exception as e:
+                    print(e)
+            print(f"question 2 is {question}")
             
-            soup = BeautifulSoup(driver.page_source, "html.parser")
-            question = soup.find('div', {'class': "sentence"}).text
-            print("question is" + question + "2")
             
                 
         # gets answer choices
@@ -172,7 +192,10 @@ class seleniumMethods:
         while x <= 4:
             x_str = str(x)
             q_num_str = str(question_num)
-            choice = driver.find_element_by_xpath('//*[@id="challenge"]/div/div[1]/div[' + q_num_str + ']/div/div/section[1]/div[1]/div[4]/a[' + x_str + ']').text
+            try:
+                choice = driver.find_element_by_xpath('//*[@id="challenge"]/div/div[1]/div[' + q_num_str + ']/div/div/section[1]/div[1]/div[4]/a[' + x_str + ']').text
+            except:
+                pass
             choice = str(choice)
             choices = choices + "," + choice
             x+=1
@@ -191,7 +214,7 @@ class seleniumMethods:
         except:
             return False
         
-    def getParagraphData():
+    def paragraphGetData():
 
         print("working on it")
 
@@ -207,6 +230,46 @@ class seleniumMethods:
     def changeURL(self, url):
         driver.get(url)
 
+    def MCQguess(self):
+        num = self.checkValue()
+        self.mcqSubmit(num, 1)
+        time.sleep(1)
+        self.mcqSubmit(num, 1)
+        time.sleep(1)
+        self.mcqSubmit(num, 1)
+        time.sleep(1)
+        self.mcqSubmit(num, 1)
+        
+    def audioGetAnswer(self):
+        soup = BeautifulSoup(driver.page_source, "html.parser")
+        for strong in soup('div', {'class':'sentence complete'}):
+            try:
+                answer = strong.find('strong', {'':''}).text
+                return answer
+            except Exception as e:
+                print(e)
+
+    def audioSubmit(self, q_num, answer):
+        q_num = str(q_num)
+        # find answer input box
+        try:
+            blank = driver.find_element_by_xpath('//*[@id="challenge"]/div/div[1]/div[' + q_num + ']/div/div/section[1]/div[1]/div[2]/div[2]/input')
+            blank.send_keys(answer)
+            time.sleep(1)
+            driver.find_element_by_xpath('//*[@id="challenge"]/div/div[1]/div[' + q_num + ']/div/div/section[1]/div[1]/div[2]/div[3]/button[1]').click()
+        except:
+            pass
+        # //*[@id="challenge"]/div/div[1]/div/div/div/section[1]/div[1]/div[2]/div[2]/input
+        # //*[@id="challenge"]/div/div[1]/div[2]/div/div/section[1]/div[1]/div[2]/div[2]/input
+    def audioGiveUp(self):
+        num = self.checkValue
+        num = str(num)
+        try:
+            driver.find_element_by_xpath('//*[@id="challenge"]/div/div[1]/div[' + num + ']/div/div/section[1]/div[1]/div[2]/div[3]/button[2]').click()
+   
+        except:
+            print("error giveing up")
+            self.nextQuestion()
 class requestMethods():
 
     def __init__(self):
@@ -243,14 +306,20 @@ class requestMethods():
         r = request.get(url, headers=headers)
 
         # get answer
+        soup = BeautifulSoup(r.text, "html.parser")
         try:
-            soup = BeautifulSoup(r.text, "html.parser")
+            
             short_def = soup.find('p', {'class': "short"}).text
+        except:
+            print("failed finding def short")
+            short_def = ""
+
+        try:
             long_def = soup.find('p', {'class': "long"}).text
         except:
-            print("failed finding def")
-            short_def = ""
+            print("failed finding def long")
             long_def = ""
+
         print(short_def)
         print(long_def)
 
@@ -287,13 +356,18 @@ class logicMethods():
         # removes all unncessary words
         # answerData = ' '.join(answerData)
 
-        answerData = answerData.replace(" and ", "").replace(" or ", "").replace(" is ", "").replace(" was ", "").replace(" has ", "").replace(" a ", "").replace(" from ", "")
-
+        answerData = answerData.replace(" and ", "").replace(" that ", "").replace(" is ", "").replace(" was ", "").replace(" has ", "").replace(" a ", "").replace(" from ", "")
+        answerData = answerData.replace(" for ", "").replace(" at ", "").replace(" the ", "").replace(" a ", "").replace(" is ", "").replace(" in ", "").replace(" an ", "")
+        answerData = answerData.replace(" to ", "").replace(" or ", "").replace(" of ", "").replace(" as ", "")
         print(questionData)
         print(answerData)
 
+        questionData = questionData.replace(" and ", "").replace(" that ", "").replace(" is ", "").replace(" was ", "").replace(" has ", "").replace(" a ", "").replace(" from ", "")
+        questionData = questionData.replace(" for ", "").replace(" at ", "").replace(" the ", "").replace(" a ", "").replace(" is ", "").replace(" in ", "").replace(" an ", "")
+        questionData = questionData.replace(" to ", "").replace(" or ", "").replace(" of ", "").replace(" as ", "")
+        
         questionData = questionData.split(",")
-
+        
         question_1 = questionData[1].split(" ")
         question_2 = questionData[2].split(" ")
         question_3 = questionData[3].split(" ")
@@ -304,20 +378,25 @@ class logicMethods():
         num_3 = 0
         num_4 = 0
 
+        
         for x in range(0, len(question_1)):
             if question_1[x] in answerData: 
+                print(question_1[x])
                 num_1+=1
                 
         for x in range(0, len(question_2)):
             if question_2[x] in answerData: 
+                print(question_2[x])
                 num_2+=1
 
         for x in range(0, len(question_3)):
             if question_3[x] in answerData: 
+                print(question_3[x])
                 num_3+=1
 
         for x in range(0, len(question_4)):
             if question_4[x] in answerData: 
+                print(question_4[x])
                 num_4+=1
 
 
