@@ -150,10 +150,12 @@ class seleniumMethods:
             try:
                 driver.find_element_by_xpath('//*[@id="challenge"]/div/div[1]/div[' + q_num + ']/div/div/section[1]/div[1]/div[4]/a[1]')
                 return "MCQ"
-                driver.find_element_by_xpath('//*[@id="challenge"]/div/div[1]/div[4]/div/div/section[1]/div[1]/div[4]/a[1]')
                 
             except:
                 try:
+                    self.changeURL("https://www.vocabulary.com/")
+                    time.sleep(10)
+                    
                     return "IDK"
                 except:
                     return "IDK FATAL"
@@ -195,6 +197,7 @@ class seleniumMethods:
             try:
                 choice = driver.find_element_by_xpath('//*[@id="challenge"]/div/div[1]/div[' + q_num_str + ']/div/div/section[1]/div[1]/div[4]/a[' + x_str + ']').text
             except:
+                choice = ""
                 pass
             choice = str(choice)
             choices = choices + "," + choice
@@ -262,13 +265,17 @@ class seleniumMethods:
         # //*[@id="challenge"]/div/div[1]/div/div/div/section[1]/div[1]/div[2]/div[2]/input
         # //*[@id="challenge"]/div/div[1]/div[2]/div/div/section[1]/div[1]/div[2]/div[2]/input
     def audioGiveUp(self):
-        num = self.checkValue
+        num = self.checkValue()
         num = str(num)
+        print("num is " + num)
         try:
+            # driver.find_element_by_xpath('//*[@id="challenge"]/div/div[1]/div[' + num + ']/div/div/section[1]/div[1]/div[2]/div[3]/button[2]').click()
+            # driver.find_element_by_xpath('//*[@id="challenge"]/div/div[1]/div[2]/div/div/section[1]/div[1]/div[2]/div[3]/button[2]').click()
             driver.find_element_by_xpath('//*[@id="challenge"]/div/div[1]/div[' + num + ']/div/div/section[1]/div[1]/div[2]/div[3]/button[2]').click()
-   
-        except:
-            print("error giveing up")
+
+        except Exception as e:
+            print("error giving up")
+            print(e)
             self.nextQuestion()
 class requestMethods():
 
@@ -358,13 +365,13 @@ class logicMethods():
 
         answerData = answerData.replace(" and ", "").replace(" that ", "").replace(" is ", "").replace(" was ", "").replace(" has ", "").replace(" a ", "").replace(" from ", "")
         answerData = answerData.replace(" for ", "").replace(" at ", "").replace(" the ", "").replace(" a ", "").replace(" is ", "").replace(" in ", "").replace(" an ", "")
-        answerData = answerData.replace(" to ", "").replace(" or ", "").replace(" of ", "").replace(" as ", "")
+        answerData = answerData.replace(" to ", "").replace(" or ", "").replace(" of ", "").replace(" as ", "").replace(" a", "").replace("a ", "")
         print(questionData)
         print(answerData)
 
         questionData = questionData.replace(" and ", "").replace(" that ", "").replace(" is ", "").replace(" was ", "").replace(" has ", "").replace(" a ", "").replace(" from ", "")
         questionData = questionData.replace(" for ", "").replace(" at ", "").replace(" the ", "").replace(" a ", "").replace(" is ", "").replace(" in ", "").replace(" an ", "")
-        questionData = questionData.replace(" to ", "").replace(" or ", "").replace(" of ", "").replace(" as ", "")
+        questionData = questionData.replace(" to ", "").replace(" or ", "").replace(" of ", "").replace(" as ", "").replace(" a", "").replace("a ", "")
         
         questionData = questionData.split(",")
         

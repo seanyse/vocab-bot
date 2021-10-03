@@ -95,6 +95,8 @@ def main():
                 browser.nextQuestion()
 
         elif type == "IDK":
+            browser.changeURL(url)
+            time.sleep(5)
             print("not solvable")
 
         
