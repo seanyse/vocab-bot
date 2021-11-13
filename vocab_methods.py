@@ -7,7 +7,7 @@ from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
-
+import pandas as pd
 import requests
 
 class seleniumMethods:
@@ -50,7 +50,7 @@ class seleniumMethods:
     def login(self):
 
         # login
-        driver.get("https://vocab.com/login")
+        driver.get("https://vocabulary.com/login")
 
         WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.CLASS_NAME, 'value')))
 
@@ -340,7 +340,6 @@ class requestMethods():
                 synonyms = synonyms + (litag.text)
 
 
-        
         synonyms = synonyms.strip()
         synonyms = synonyms.replace(" ", "").replace("\n", " ")
         print(synonyms)
@@ -366,6 +365,7 @@ class logicMethods():
         answerData = answerData.replace(" and ", "").replace(" that ", "").replace(" is ", "").replace(" was ", "").replace(" has ", "").replace(" a ", "").replace(" from ", "")
         answerData = answerData.replace(" for ", "").replace(" at ", "").replace(" the ", "").replace(" a ", "").replace(" is ", "").replace(" in ", "").replace(" an ", "")
         answerData = answerData.replace(" to ", "").replace(" or ", "").replace(" of ", "").replace(" as ", "").replace(" a", "").replace("a ", "")
+        
         print(questionData)
         print(answerData)
 
@@ -374,7 +374,6 @@ class logicMethods():
         questionData = questionData.replace(" to ", "").replace(" or ", "").replace(" of ", "").replace(" as ", "").replace(" a", "").replace("a ", "")
         
         questionData = questionData.split(",")
-        
         question_1 = questionData[1].split(" ")
         question_2 = questionData[2].split(" ")
         question_3 = questionData[3].split(" ")
@@ -438,13 +437,26 @@ class logicMethods():
         return sentence.lower().split().count(word)
 
 
-    
-
-        
-        
-
-        
 
 
+class dataMethods():
 
+    def __init__(self):
 
+        try:
+            data = pd.read_csv("data.csv")
+        except:
+            print("Failed Finding Dataset")
+
+    def write(self, word, answer):
+        instance = pd.read_csv("data.csv")
+
+        for index in instance.index:
+            if instance.loc[index,'Word']==word:
+                instance.loc[index, 'Definition'] = answer
+
+        self.save()
+
+    def save(self):
+        self.data.to_csv("data.csv", index=False)
+        print("df saved")

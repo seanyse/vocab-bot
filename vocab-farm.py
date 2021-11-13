@@ -1,4 +1,4 @@
-from vocab_methods import requestMethods, seleniumMethods, logicMethods
+from vocab_methods import dataMethods, requestMethods, seleniumMethods, logicMethods
 import json
 import time
 
@@ -14,6 +14,7 @@ def main():
     browser = seleniumMethods(username, password, url)
     request = requestMethods()
     logic = logicMethods()
+    data = dataMethods()
 
     browser.init_browser()
     request.init_req()
@@ -46,29 +47,43 @@ def main():
             answer_num = logic.getAnswer(questionData, answerData)
 
             browser.mcqSubmit(q_num, answer_num)
-
+            time.sleep(2)
             next = browser.nextQuestion()
 
             if next:
+                answerData = answerData.split(",")
+                data.write(questionData, answerData[answer_num-1])
                 pass
             else:
+                
                 browser.mcqSubmit(q_num, 1)
+                if browser.nextQuestion():
+                    answerData = answerData.split(",")
+                    data.write(questionData, answerData[0])
+
                 time.sleep(1)
                 browser.mcqSubmit(q_num, 2)
+                if browser.nextQuestion():
+                    answerData = answerData.split(",")
+                    data.write(questionData, answerData[1])
+
                 time.sleep(1)
                 browser.mcqSubmit(q_num, 3)
+                if browser.nextQuestion():
+                    answerData = answerData.split(",")
+                    data.write(questionData, answerData[2])
+
                 time.sleep(1)
                 browser.mcqSubmit(q_num, 4)
-                time.sleep(1.5)
+                if browser.nextQuestion():
+                    answerData = answerData.split(",")
+                    data.write(questionData, answerData[3])
+
+                time.sleep(1)
                 browser.nextQuestion()
 
 
                 
-
-
-            
-
-            
             
         elif type == "PARAGRAPH":
             questionData = browser.mcqGetParagraphData(q_num)
@@ -80,7 +95,7 @@ def main():
             
         elif type == "SENTANCEMCQ":
             print("not solvable")
-            
+             
         elif type == "AUDIO":
             answer = browser.audioGetAnswer()
             browser.audioSubmit(q_num, answer)

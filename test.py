@@ -1,36 +1,44 @@
-questionData = "reclusive,repetitive,symmetrical,cooperative,antisocial"
-answerData = 'The adjective reclusive describes a desire for seclusion or privacy. A reclusive movie star is the one tabloid photographers dream of capturing on film.:The root word of reclusive is recluse, which came from the Old French word reclus, originally meaning "a person shut up from the world for purposes of religious meditation." Today, maybe you just want to be alone — reclusive describes a person who is withdrawn from society or seeks solitude, like a hermit. Grocery shopping late at night is a reclusive habit, because few people are in the store then.:indrawn, introverted, nongregarious, recessive, reserved, unsocial, withdrawn aloof, antisocial, asocial, buttoned-up, cold, cold-eyed, cool, detached, distant, dry, frosty, offish, remote, standoff, standoffish, unbending, unclubbable, unsociable misanthropic apathetic, hard, indifferent, unconcerned clinical, dispassionate, impersonal, professional disinterested, incurious, uninterested reticent, silent, taciturn, uncommunicative diffident, shy, timid cliquey, cliquish, clubbish boon, clubbable (alsoclubable), clubby, companionable, convivial, extroverted (alsoextraverted), gregarious, outgoing (alsoclubable), clubby, companionable, convivial, extroverted (alsoextraverted), gregarious, outgoing (alsoextraverted), gregarious, outgoing communicative, expansive, garrulous, talkative affable, folksy, genial, gracious, hospitable agreeable, amiable, congenial, kindly, neighborly cordial, friendly, sociable, social, warm'
+import requests
 
-questionData = questionData.split(",")
+headers = {
+    'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/89.0.4389.90 Safari/537.36',
+    'Accept': 'text/html, application/xhtml+xml, application/xml;q=0.9, */*;q=0. 8' ,
+    'Accept-Language': 'en-US, en;q=0.5',
+    'DNT': '1',
+    'Connection':'keep-alive',
+    'Upgrade-Insecure-Requests':'1',
+    'Accept-Encoding':'identity',
+}
 
-question_1 = questionData[1].split(" ")
-question_2 = questionData[2].split(" ")
-question_3 = questionData[3].split(" ")
-question_4 = questionData[4].split(" ")
+try:
+    print(i)
+except:
+    i = 0
 
-num_1 = 0
-num_2 = 0
-num_3 = 0
-num_4 = 0
+with open('proxies.txt') as f:
+    proxy_list = f.readlines()
 
-for x in range(0, len(question_1)):
-    if question_1[x] in answerData: 
-        num_1+=1
-        
-for x in range(0, len(question_2)):
-    if question_2[x] in answerData: 
-        num_2+=1
+if i > len(proxy_list):
+    i = 0
 
-for x in range(0, len(question_3)):
-    if question_3[x] in answerData: 
-        num_3+=1
+# split proxy into user pass ip port
+proxy = proxy_list[i].split(":")
 
-for x in range(0, len(question_4)):
-    if question_4[x] in answerData: 
-        num_4+=1
+print(proxy[0])
+print(proxy[1])
+print(proxy[2])
+print(proxy[3])
 
+user = proxy[2]
+password = proxy[3]
+ip = proxy[0]
+port = proxy[1]
 
-print(num_1)
-print(num_2)
-print(num_3)
-print(num_4)
+proxies = {
+    "http" : f"http://{user}:{password}@{ip}:{port}",
+    "https": f"https://{user}:{password}@{ip}:{port}"
+}
+r = requests.Session()
+r.proxies.update(proxies)
+result = r.get("https://vocabulary.com", headers=headers,)
+
