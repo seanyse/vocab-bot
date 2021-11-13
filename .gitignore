@@ -5,4 +5,5 @@ proxies.txt
 test.py
 .exe
 test.py
-__pycache__
+/__pycache__
+chromedriver.exe
