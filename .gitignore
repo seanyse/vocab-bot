@@ -3,6 +3,6 @@ __init__.py
 page_source.txt
 proxies.txt
 test.py
-chromedriver.exe
+.exe
 test.py
 __pycache__
