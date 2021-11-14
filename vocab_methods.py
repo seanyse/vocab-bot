@@ -76,7 +76,15 @@ class seleniumMethods:
 
         driver.get(url)
 
+    def masterPage(state):
+        masterPage = state
+
     def checkValue(self):
+
+        
+            
+
+            
         
         while True:
             try:
@@ -94,9 +102,17 @@ class seleniumMethods:
                     # time.sleep(2)
                     pass
                     
-
+                
                 else:
-                    return field
+                    field = int(field)
+                    if self.masterPage == True:
+                        
+                        field+=1
+
+                    if field < 11:
+                        self.masterPage = False
+
+                    return str(field)
             except Exception as e:
                 print(e)
                 # time.sleep(1.5)
@@ -130,7 +146,7 @@ class seleniumMethods:
                     driver.find_element_by_xpath('//*[@id="challenge"]/div/div[1]/div[' + q_num + ']/div/div/section[1]/div[1]/div[2]/a[1]')
                     return "PICTURE"
                 except:
-                    return "IDK FATAL"
+                    return "MASTER PAGE"
 
             
 
@@ -238,7 +254,8 @@ class seleniumMethods:
                 time.sleep(1)
                 driver.find_element_by_xpath('//*[@id="challenge"]/div/div[1]/div[' + q_num + ']/div/div/section[1]/div[1]/div[2]/a[4]').click()
                 return
-            except:
+            except Exception as e:
+                print(e)
                 time.sleep(1)
 
 

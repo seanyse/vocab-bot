@@ -125,14 +125,15 @@ def main():
             if next:
                 pass
             else:
-                print("jere")
+                
                 browser.audioGiveUp()
                 browser.nextQuestion()
 
         elif type == "PICTURE":
-            
+            print("im here")
             browser.pictureSubmit(q_num)
-
+        elif type == "MASTER PAGE":
+            browser.masterPage(True)
         
    
 if __name__=="__main__":
