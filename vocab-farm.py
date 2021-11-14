@@ -31,6 +31,7 @@ def main():
 
     browser.changeURL(url)
 
+
     while True:
         
         q_num = browser.checkValue()
@@ -42,46 +43,62 @@ def main():
             questionData = browser.mcqGetQuestionData(q_num)
 
             questionData = str(questionData)
-            answerData = request.getAnswerData(questionData)
+            # answerData = request.getAnswerData(questionData)
             
-            answer_num = logic.getAnswer(questionData, answerData)
+            answer_num = logic.getAnswer(questionData)
 
             browser.mcqSubmit(q_num, answer_num)
             time.sleep(2)
             next = browser.nextQuestion()
 
-            if next:
-                answerData = answerData.split(",")
-                data.write(questionData, answerData[answer_num-1])
-                pass
-            else:
+            print("next is")
+            print(next)
+            questionData = questionData.split(",")
+            if next == True:
                 
+                print("-----------------------------")
+                print(questionData)
+                data.write(questionData[0], questionData[answer_num])
+                
+            else:
+                index_found = False
                 browser.mcqSubmit(q_num, 1)
-                if browser.nextQuestion():
-                    answerData = answerData.split(",")
-                    data.write(questionData, answerData[0])
-
                 time.sleep(1)
+                foo = browser.nextQuestion()
+                if foo == True and index_found == False:
+                    print("-----------------------------")
+                    print(questionData)
+                    data.write(questionData[0], questionData[1])
+                    index_found = True
+                    
                 browser.mcqSubmit(q_num, 2)
-                if browser.nextQuestion():
-                    answerData = answerData.split(",")
-                    data.write(questionData, answerData[1])
-
                 time.sleep(1)
+                foo = browser.nextQuestion()
+                if foo == True and index_found == False:
+                    print("-----------------------------")
+                    print(questionData)
+                    data.write(questionData[0], questionData[2])
+                    index_found = True
+                    
                 browser.mcqSubmit(q_num, 3)
-                if browser.nextQuestion():
-                    answerData = answerData.split(",")
-                    data.write(questionData, answerData[2])
-
                 time.sleep(1)
+                foo = browser.nextQuestion()
+                if foo == True and index_found == False:
+                    print("-----------------------------")
+                    print(questionData)
+                    data.write(questionData[0], questionData[3])
+                    index_found = True
+
                 browser.mcqSubmit(q_num, 4)
-                if browser.nextQuestion():
-                    answerData = answerData.split(",")
-                    data.write(questionData, answerData[3])
-
                 time.sleep(1)
-                browser.nextQuestion()
-
+                foo = browser.nextQuestion()   
+                if foo == True and index_found == False:
+                    print("-----------------------------")
+                    print(questionData)
+                    data.write(questionData[0], questionData[4])
+                
+                    
+                              
 
                 
             
@@ -109,10 +126,9 @@ def main():
                 browser.audioGiveUp()
                 browser.nextQuestion()
 
-        elif type == "IDK":
-            browser.changeURL(url)
-            time.sleep(5)
-            print("not solvable")
+        elif type == "PICTURE":
+            
+            browser.pictureSubmit(q_num)
 
         
    

@@ -9,6 +9,11 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 import pandas as pd
 import requests
+import nltk
+from nltk.corpus import stopwords
+from nltk.tokenize import word_tokenize
+import re
+
 
 class seleniumMethods:
 
@@ -77,8 +82,6 @@ class seleniumMethods:
             try:
                 # button position changes every question based on which question it is, scrapes question to build xpath for next question button
                 
-                print("checkvalue")
-
                 self.nextQuestion()
                 WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.CLASS_NAME, "body-wrapper")))
                 soup = BeautifulSoup(driver.page_source, "html.parser")
@@ -113,36 +116,7 @@ class seleniumMethods:
 
         q_num = self.checkValue()
         q_num = str(q_num)
-        # finds mcq question
-        # try:
-        #     try:
-        #         soup.find('input', {'type': "text"})
-        #         return "AUDIO"
-        #     except:
-        #         try:
-        #             soup.find('div', {'class':"sentence"})
-        #             return "SENTANCEMCQ"
-
-        #         except :
-        #             try:
-        #                 soup.find('div', {'class': "sentence blanked"})
-        #                 return "PARAGRAPH"
-        #             except:
-        #                 for strong in soup('div', {'class':'instructions'}):
-        #                     while True:
-        #                         try:
-        #                             strong.find('strong', {'class':''})
-        #                             return "MCQ"
-        #                         except:
-        #                             try:
-                                        
-        #                                 return "IDK"
-        #                             except:
-        #                                 return "Error Returning"
-
-        # except Exception as e:
-        #     print(e)
-
+     
         try:
             driver.find_element_by_xpath('//*[@id="challenge"]/div/div[1]/div[' + q_num + ']/div/div/section[1]/div[1]/div[2]/div[2]/input')
             return "AUDIO"
@@ -153,10 +127,8 @@ class seleniumMethods:
                 
             except:
                 try:
-                    self.changeURL("https://www.vocabulary.com/")
-                    time.sleep(10)
-                    
-                    return "IDK"
+                    driver.find_element_by_xpath('//*[@id="challenge"]/div/div[1]/div[' + q_num + ']/div/div/section[1]/div[1]/div[2]/a[1]')
+                    return "PICTURE"
                 except:
                     return "IDK FATAL"
 
@@ -173,9 +145,7 @@ class seleniumMethods:
         try:
             for strong in soup('div', {'class':'instructions'}):
                 question = strong.find('strong', {'':''}).text
-                print("question is" + question + "1")
 
-            
         except:
 
             for strong in soup('div', {'class':'sentence'}):
@@ -184,10 +154,8 @@ class seleniumMethods:
                     
                 except Exception as e:
                     print(e)
-            print(f"question 2 is {question}")
             
-            
-                
+               
         # gets answer choices
         x = 1
         choices = ''
@@ -202,8 +170,6 @@ class seleniumMethods:
             choice = str(choice)
             choices = choices + "," + choice
             x+=1
-        
-        print(question + choices)
         return question + choices
 
 
@@ -218,8 +184,6 @@ class seleniumMethods:
             return False
         
     def paragraphGetData():
-
-        print("working on it")
 
         return "working on it"
     
@@ -242,9 +206,44 @@ class seleniumMethods:
         self.mcqSubmit(num, 1)
         time.sleep(1)
         self.mcqSubmit(num, 1)
+    
+    def pictureSubmit(self, q_num):
         
+        while True:
+            try:
+                driver.find_element_by_xpath('//*[@id="challenge"]/div/div[1]/div[' + q_num + ']/div/div/section[1]/div[1]/div[2]/a[1]').click()
+                time.sleep(1)
+                driver.find_element_by_xpath('//*[@id="challenge"]/div/div[1]/div[' + q_num + ']/div/div/section[1]/div[1]/div[2]/a[2]').click()
+                time.sleep(1)
+                driver.find_element_by_xpath('//*[@id="challenge"]/div/div[1]/div[' + q_num + ']/div/div/section[1]/div[1]/div[2]/a[3]').click()
+                time.sleep(1)
+                driver.find_element_by_xpath('//*[@id="challenge"]/div/div[1]/div[' + q_num + ']/div/div/section[1]/div[1]/div[2]/a[4]').click()
+                return
+            except:
+                time.sleep(1)
+
+
     def audioGetAnswer(self):
+        
         soup = BeautifulSoup(driver.page_source, "html.parser")
+        # //*[@id="challenge"]/div/div[1]/div[6]/div/div/section[1]/div[1]/div[1]/div[1]
+
+        # //*[@id="challenge"]/div/div[1]/div[1]/div/div/section[1]/div[1]/div[1]/div[1]
+
+        # this is experimental
+        question_num = self.checkValue()
+        question_num = int(question_num)
+        answers = soup.findAll('div', {'class':'sentence complete'})
+        answers = str(answers)
+        print("experimental audio finder is ")
+        print(answers)
+
+        result = re.search('<strong>(.+?)<strog>', answers)
+        print("experemental audio parsed is")
+        print(result.group(question_num*2))
+
+        # this actually works
+        
         for strong in soup('div', {'class':'sentence complete'}):
             try:
                 answer = strong.find('strong', {'':''}).text
@@ -267,14 +266,13 @@ class seleniumMethods:
     def audioGiveUp(self):
         num = self.checkValue()
         num = str(num)
-        print("num is " + num)
+    
         try:
             # driver.find_element_by_xpath('//*[@id="challenge"]/div/div[1]/div[' + num + ']/div/div/section[1]/div[1]/div[2]/div[3]/button[2]').click()
             # driver.find_element_by_xpath('//*[@id="challenge"]/div/div[1]/div[2]/div/div/section[1]/div[1]/div[2]/div[3]/button[2]').click()
             driver.find_element_by_xpath('//*[@id="challenge"]/div/div[1]/div[' + num + ']/div/div/section[1]/div[1]/div[2]/div[3]/button[2]').click()
 
         except Exception as e:
-            print("error giving up")
             print(e)
             self.nextQuestion()
 class requestMethods():
@@ -307,8 +305,6 @@ class requestMethods():
         question_data = definition.split(",")
         url = "https://www.vocabulary.com/dictionary/" + question_data[0]
         url_2 = "https://www.merriam-webster.com/thesaurus/" + question_data[0]
-        print(url)
-        print(url_2)
 
         r = request.get(url, headers=headers)
 
@@ -327,8 +323,6 @@ class requestMethods():
             print("failed finding def long")
             long_def = ""
 
-        print(short_def)
-        print(long_def)
 
         r = request.get(url_2, headers=headers)
 
@@ -342,7 +336,6 @@ class requestMethods():
 
         synonyms = synonyms.strip()
         synonyms = synonyms.replace(" ", "").replace("\n", " ")
-        print(synonyms)
         return short_def + ":" + long_def + ":" + synonyms
 
 
@@ -351,40 +344,75 @@ class logicMethods():
     def __init__(self):
         pass
 
-   
+    def removeStopWords(self, definition):
+        stop_words = set(stopwords.words('english'))
+        word_tokens = word_tokenize(definition)
+        filtered_sentence = [w for w in word_tokens if not w in stop_words]
+        filtered_sentence = []
+        for w in word_tokens:
+            if w not in stop_words:
+                filtered_sentence.append(w)
+        return ' '.join(filtered_sentence)
 
-    def getAnswer(self, questionData, answerData):
+    def getAnswer(self, questionData):
 
-        # calc percentage, highest % gets answer
-        print("Def start start")
+        
         
 
-        # removes all unncessary words
-        # answerData = ' '.join(answerData)
-
-        answerData = answerData.replace(" and ", "").replace(" that ", "").replace(" is ", "").replace(" was ", "").replace(" has ", "").replace(" a ", "").replace(" from ", "")
-        answerData = answerData.replace(" for ", "").replace(" at ", "").replace(" the ", "").replace(" a ", "").replace(" is ", "").replace(" in ", "").replace(" an ", "")
-        answerData = answerData.replace(" to ", "").replace(" or ", "").replace(" of ", "").replace(" as ", "").replace(" a", "").replace("a ", "")
-        
-        print(questionData)
-        print(answerData)
-
-        questionData = questionData.replace(" and ", "").replace(" that ", "").replace(" is ", "").replace(" was ", "").replace(" has ", "").replace(" a ", "").replace(" from ", "")
-        questionData = questionData.replace(" for ", "").replace(" at ", "").replace(" the ", "").replace(" a ", "").replace(" is ", "").replace(" in ", "").replace(" an ", "")
-        questionData = questionData.replace(" to ", "").replace(" or ", "").replace(" of ", "").replace(" as ", "").replace(" a", "").replace("a ", "")
+        # questionData = questionData.replace(" and", "").replace(" that ", "").replace(" is ", "").replace(" was ", "").replace(" has ", "").replace(" a ", "").replace(" from ", "")
+        # questionData = questionData.replace(" for ", "").replace(" at ", "").replace(" the ", "").replace(" a ", "").replace(" is ", "").replace(" in ", "").replace(" an ", " ").replace("an ", "")
+        # questionData = questionData.replace(" to ", "").replace(" or ", "").replace(" of ", "").replace(" as ", "").replace(" a", "").replace("a ", "")
         
         questionData = questionData.split(",")
+        
+        # word is the question you need to answer, question_1 - 4 are the questions you can answer
+        questionData[0] = self.removeStopWords(questionData[0])
+        questionData[1] = self.removeStopWords(questionData[1])
+        questionData[2] = self.removeStopWords(questionData[2])
+        questionData[3] = self.removeStopWords(questionData[3])
+        questionData[4] = self.removeStopWords(questionData[4])
+
+        print(questionData)
+        data = pd.read_csv("data.csv")
+
+        print(questionData[0])
+        if questionData[0] == "________":
+            
+
+            print("___________ detected")
+            for index in data.index:
+                if data.loc[index, 'Word'] == questionData[1]:
+                    return 1
+                if data.loc[index, 'Word'] == questionData[2]:
+                    return 2
+                if data.loc[index, 'Word'] == questionData[3]:
+                    return 3
+                if data.loc[index, 'Word'] == questionData[4]:
+                    return 4
+
+        for index in data.index:
+            if data.loc[index, 'Word'] in questionData:
+                answerData = data.loc[index, 'Definition']
+
+        try:
+            foo = answerData.split(":")
+        except:
+            answerData = "answerData"
+        try:
+            
+            print(answerData)
+        except:
+            print("failed finding answer")
+            answerData = "answerdata"
+        
+
         question_1 = questionData[1].split(" ")
         question_2 = questionData[2].split(" ")
         question_3 = questionData[3].split(" ")
         question_4 = questionData[4].split(" ")
 
-        num_1 = 0
-        num_2 = 0
-        num_3 = 0
-        num_4 = 0
+        num_1, num_2, num_3, num_4 = 0, 0, 0, 0
 
-        
         for x in range(0, len(question_1)):
             if question_1[x] in answerData: 
                 print(question_1[x])
@@ -405,18 +433,10 @@ class logicMethods():
                 print(question_4[x])
                 num_4+=1
 
-
-        print(num_1)
-        print(num_2)
-        print(num_3)
-        print(num_4)
-
-        num_1 = str(num_1)
-        num_2 = str(num_2)
-        num_3 = str(num_3)
-        num_4 = str(num_4)
-
+        num_1, num_2, num_3, num_4 = str(num_1), str(num_2), str(num_3), str(num_4)
+        
         num_total = num_1 + "," + num_2 + "," + num_3 + "," + num_4
+        print(num_total)
 
         num_total = num_total.split(",")
         try:
@@ -426,12 +446,9 @@ class logicMethods():
             max_index = 1
 
         max_index+=1
-        print("Index_mx is")
+        print("max index is")
         print(max_index)
-
         return max_index
-        
-
 
     def count_occurrences(self, word, sentence):
         return sentence.lower().split().count(word)
@@ -448,15 +465,19 @@ class dataMethods():
         except:
             print("Failed Finding Dataset")
 
-    def write(self, word, answer):
+    def write(self, vocab, answer):
         instance = pd.read_csv("data.csv")
 
-        for index in instance.index:
-            if instance.loc[index,'Word']==word:
-                instance.loc[index, 'Definition'] = answer
+        print(f"writing {answer} to {vocab}")
+    
+        try:
+            for index in instance.index:
+                if instance.loc[index,'Word']==vocab:
+                    current = instance.loc[index, 'Definition']
+                    instance.loc[index, 'Definition'] = answer + "," + current
 
-        self.save()
-
-    def save(self):
-        self.data.to_csv("data.csv", index=False)
-        print("df saved")
+            instance.to_csv("data.csv", index=False)
+            print("Written")
+        except Exception as e:
+            print("Failed Writing")
+            print(e)
