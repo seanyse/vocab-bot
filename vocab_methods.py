@@ -44,7 +44,7 @@ class seleniumMethods:
         options.add_argument('ignore-certificate-errors')
         options.add_experimental_option("excludeSwitches", ['enable-automation'])
         options.add_argument("disable-infobars")
-        # options.add_argument("--mute-audio")
+        options.add_argument("--mute-audio")
 
         # initiate browser
         global driver
@@ -137,16 +137,34 @@ class seleniumMethods:
 
     def mcqGetQuestionData(self, question_num):
         
+        
         WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.CLASS_NAME, "choices")))
-        time.sleep(3)
+        time.sleep(1.5)
 
         soup = BeautifulSoup(driver.page_source, "html.parser")
         
         try:
-            for strong in soup('div', {'class':'instructions'}):
-                question = strong.find('strong', {'':''}).text
+            questions = soup.findAll('div', {'class': 'instructions'})
+            result = soup.findAll("strong")
+            result.reverse()
+            print(result)
+
+            result_2 = str(result)
+            pattern = "<strong>(.*?)</strong>"
+
+            substring = re.search(pattern, result_2).group(1)
+            
+            question = substring
+
+            # for strong in soup('div', {'class':'instructions'}):
+            #     question = strong.find('strong', {'':''}).text
+                
+
+
+
 
         except:
+            print(e)
 
             for strong in soup('div', {'class':'sentence'}):
                 try:
@@ -170,6 +188,7 @@ class seleniumMethods:
             choice = str(choice)
             choices = choices + "," + choice
             x+=1
+        
         return question + choices
 
 
@@ -234,22 +253,33 @@ class seleniumMethods:
         question_num = self.checkValue()
         question_num = int(question_num)
         answers = soup.findAll('div', {'class':'sentence complete'})
-        answers = str(answers)
-        print("experimental audio finder is ")
-        print(answers)
+        
+        # print("experimental audio finder is ")
+        # print(answers)
 
-        result = re.search('<strong>(.+?)<strog>', answers)
+        result = soup.findAll("strong")
+        result.reverse()
+        
         print("experemental audio parsed is")
-        print(result.group(question_num*2))
+        print(result)
+        result = str(result)
+        pattern = "<strong>(.*?)</strong>"
+        
+        substring = re.search(pattern, result).group(1)
+        
+        return substring
+
+
+        
 
         # this actually works
         
-        for strong in soup('div', {'class':'sentence complete'}):
-            try:
-                answer = strong.find('strong', {'':''}).text
-                return answer
-            except Exception as e:
-                print(e)
+        # for strong in soup('div', {'class':'sentence complete'}):
+        #     try:
+        #         answer = strong.find('strong', {'':''}).text
+        #         return answer
+        #     except Exception as e:
+        #         print(e)
 
     def audioSubmit(self, q_num, answer):
         q_num = str(q_num)
@@ -468,8 +498,9 @@ class dataMethods():
     def write(self, vocab, answer):
         instance = pd.read_csv("data.csv")
 
+        vocab, answer = str(vocab), str(answer)
         print(f"writing {answer} to {vocab}")
-    
+
         try:
             for index in instance.index:
                 if instance.loc[index,'Word']==vocab:

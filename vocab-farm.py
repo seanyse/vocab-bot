@@ -31,9 +31,11 @@ def main():
 
     browser.changeURL(url)
 
-
+    num_right, num_wrong, num_total = 0, 0, 0
     while True:
-        
+        print(f"Questions Right, {num_right}: Questions Wrong {num_wrong}: Questions Total {num_total}")
+        questionData = ""
+
         q_num = browser.checkValue()
         print(q_num)
         type = browser.getType()
@@ -59,7 +61,7 @@ def main():
                 print("-----------------------------")
                 print(questionData)
                 data.write(questionData[0], questionData[answer_num])
-                
+                num_right += 1
             else:
                 index_found = False
                 browser.mcqSubmit(q_num, 1)
@@ -97,7 +99,8 @@ def main():
                     print(questionData)
                     data.write(questionData[0], questionData[4])
                 
-                    
+                num_wrong += 1
+            num_total += 1
                               
 
                 
