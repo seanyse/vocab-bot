@@ -125,7 +125,6 @@ def main():
             if next:
                 pass
             else:
-                print("jere")
                 browser.audioGiveUp()
                 browser.nextQuestion()
 
@@ -133,7 +132,14 @@ def main():
             
             browser.pictureSubmit(q_num)
 
+        elif type == "MASTERY":
+            # browser.mastery("T")
+
+            print("Mastery Page Detected, Restarting Browser...")
+            browser.kill()
+            time.sleep(2)
+            main()
         
    
 if __name__=="__main__":
-    main()
+    main() 
