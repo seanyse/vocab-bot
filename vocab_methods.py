@@ -45,6 +45,7 @@ class seleniumMethods:
         options.add_experimental_option("excludeSwitches", ['enable-automation'])
         options.add_argument("disable-infobars")
         options.add_argument("--mute-audio")
+        options.add_argument("--headless")
 
         # initiate browser
         global driver
@@ -75,16 +76,14 @@ class seleniumMethods:
     def changeURL(self, url):
 
         driver.get(url)
+    def mastery(self, t):
+        if t == "T":
+            mastery = True
 
-    def masterPage(state):
-        masterPage = state
+    def kill(self):
+        driver.close()
 
     def checkValue(self):
-
-        
-            
-
-            
         
         while True:
             try:
@@ -102,15 +101,13 @@ class seleniumMethods:
                     # time.sleep(2)
                     pass
                     
-                
-                else:
-                    field = int(field)
-                    if self.masterPage == True:
-                        
-                        field+=1
 
-                    if field < 11:
-                        self.masterPage = False
+                else:
+                    if self.mastery == True:
+                        print("mastery detected adding 1")
+                        return str(int(field) + 1)
+                    if int(field) >= 10:
+                        self.mastery = False
 
                     return str(field)
             except Exception as e:
@@ -146,7 +143,7 @@ class seleniumMethods:
                     driver.find_element_by_xpath('//*[@id="challenge"]/div/div[1]/div[' + q_num + ']/div/div/section[1]/div[1]/div[2]/a[1]')
                     return "PICTURE"
                 except:
-                    return "MASTER PAGE"
+                    return "MASTERY"
 
             
 
@@ -232,15 +229,6 @@ class seleniumMethods:
     def changeURL(self, url):
         driver.get(url)
 
-    def MCQguess(self):
-        num = self.checkValue()
-        self.mcqSubmit(num, 1)
-        time.sleep(1)
-        self.mcqSubmit(num, 1)
-        time.sleep(1)
-        self.mcqSubmit(num, 1)
-        time.sleep(1)
-        self.mcqSubmit(num, 1)
     
     def pictureSubmit(self, q_num):
         
@@ -254,8 +242,7 @@ class seleniumMethods:
                 time.sleep(1)
                 driver.find_element_by_xpath('//*[@id="challenge"]/div/div[1]/div[' + q_num + ']/div/div/section[1]/div[1]/div[2]/a[4]').click()
                 return
-            except Exception as e:
-                print(e)
+            except:
                 time.sleep(1)
 
 
@@ -522,7 +509,7 @@ class dataMethods():
             for index in instance.index:
                 if instance.loc[index,'Word']==vocab:
                     current = instance.loc[index, 'Definition']
-                    instance.loc[index, 'Definition'] = answer + "," + current
+                    instance.loc[index, 'Definition'] = answer + "," + str(current)
 
             instance.to_csv("data.csv", index=False)
             print("Written")
