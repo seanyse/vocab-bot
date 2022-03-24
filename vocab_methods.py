@@ -1,9 +1,7 @@
 from logging import exception, fatal
-from selenium.common.exceptions import NoSuchAttributeException
 from selenium import webdriver
 import time
 from bs4 import BeautifulSoup
-from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
@@ -13,7 +11,8 @@ import nltk
 from nltk.corpus import stopwords
 from nltk.tokenize import word_tokenize
 import re
-
+from webdriver_manager.chrome import ChromeDriverManager
+import os
 
 class seleniumMethods:
 
@@ -49,7 +48,7 @@ class seleniumMethods:
 
         # initiate browser
         global driver
-        driver = webdriver.Chrome(executable_path="chromedriver.exe", options=options)
+        driver = webdriver.Chrome(ChromeDriverManager().install())
 
         
 
@@ -407,7 +406,9 @@ class logicMethods():
         questionData[4] = self.removeStopWords(questionData[4])
 
         print(questionData)
-        data = pd.read_csv("data.csv")
+        __location__ = os.path.realpath(os.path.join(os.getcwd(), os.path.dirname("data.csv")))
+        data = pd.read_csv(__location__ + "/data.csv")
+
 
         print(questionData[0])
         if questionData[0] == "________":

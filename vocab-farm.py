@@ -1,12 +1,14 @@
 from vocab_methods import dataMethods, requestMethods, seleniumMethods, logicMethods
 import json
 import time
+import os
 
-f = open('data.json',)
+__location__ = os.path.realpath(os.path.join(os.getcwd(), os.path.dirname(__file__)))
+f = open(os.path.join(__location__, 'data.json'))
 data = json.load(f)
 for i in data["data"]:
     username = i["username"]
-    password = i["password"]
+    password = i["password"] 
     url = i["url"]
 
 def main():
